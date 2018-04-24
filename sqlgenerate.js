@@ -1,4 +1,4 @@
-import {map, join, head, compose, curry, toUpper, prop, equals, isEmpty, F, isArrayLike, concat, __, pluck, contains} from 'ramda';
+import {map, join, head, compose, curry, toUpper, prop, equals, isEmpty, F, concat, __, pluck, contains} from 'ramda';
 
 const INDENT = '\t';
 const LINE_END = '\n';
@@ -51,7 +51,7 @@ var Generator = {
             var str = [''];
             if (n.with) {
                 const withS = recourseList(n.with);
-                const isRecursive = (n) => isArrayLike(n) ? compose(contains('recursive'), pluck('variant'))(n) : F;
+                const isRecursive = (n) => Array.isArray(n) ? compose(contains('recursive'), pluck('variant'))(n) : F;
                 const w = isRecursive(n.with) ? 'WITH RECURSIVE' : 'WITH';
                 str.push(`${w} ${withS}${LINE_END}`);
             }
@@ -458,7 +458,7 @@ var Generator = {
     definition : {
         column : (n) => {
             const recurser = recurse(Generator);
-            const datatype = isArrayLike(n.datatype) ? mapr(Generator, n.datatype) : recurser(n.datatype);
+            const datatype = Array.isArray(n.datatype) ? mapr(Generator, n.datatype) : recurser(n.datatype);
             const constraintsList = compose(join(' '), map(recurser));
             const constraints = constraintsList(n.definition);
             return `${n.name} ${datatype} ${constraints}`;
