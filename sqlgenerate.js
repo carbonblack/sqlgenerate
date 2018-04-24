@@ -1,5 +1,3 @@
-// Needed to allow its use in older versions of Node and Browsers.
-import 'babel-polyfill';
 import {map, join, head, compose, curry, toUpper, prop, equals, isEmpty, F, isArrayLike, concat, __, pluck, contains} from 'ramda';
 
 const INDENT = '\t';
@@ -537,7 +535,6 @@ var Generator = {
     }
 };
 
-module.exports = {
-    version         : require('./package.json').version,
-    generate        : (n) => Generator[n.type][n.variant](n)
-};
+export const version = require('./package.json').version;
+
+export const generate = (n) => Generator[n.type][n.variant](n);
